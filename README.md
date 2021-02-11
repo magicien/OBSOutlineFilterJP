@@ -7,13 +7,7 @@ OBS用スクリプト：縁取りフィルタ（簡易版、日本語）
 
 Mac、Windows、Linuxの各環境で動作する、はず。
 
-### 変更可能なパラメータ
-
-- 透明度閾値：縁取りをする透明度の閾値
-- 線の色
-- 線の不透明度
-- 線の幅
-    - 造りが雑なので、あまり太くすると見栄えが悪いかも
+<img width="873" alt="screenshot-1" src="https://user-images.githubusercontent.com/1047810/107635822-26be1480-6caf-11eb-9692-7175e57fffe0.png">
 
 ### インストール方法
 
@@ -23,6 +17,8 @@ Mac、Windows、Linuxの各環境で動作する、はず。
 
 3. 左下の `+` ボタンを押し、ダウンロードした `draw-outline.lua` を選択する
 
+<img width="749" alt="screenshot-2" src="https://user-images.githubusercontent.com/1047810/107636330-d09da100-6caf-11eb-9f9c-bf44fd5c3bfb.png">
+
 => 画像やウィンドウキャプチャ等のフィルタに「縁取り」という項目が追加される
 
 ### 使い方
@@ -31,6 +27,8 @@ Mac、Windows、Linuxの各環境で動作する、はず。
 
 2. 左下の `+` ボタンから「縁取り」を選択
 
+<img width="802" alt="screenshot-3" src="https://user-images.githubusercontent.com/1047810/107636627-4144bd80-6cb0-11eb-848e-a3c5b61f05c7.png">
+
 3. 各種パラメータを設定
 
 ### アンインストール方法
@@ -38,3 +36,7 @@ Mac、Windows、Linuxの各環境で動作する、はず。
 1. OBSを起動後、`ツール` > `スクリプト` メニューを開く
 
 2. `draw-outline.lua` を選択した状態で左下の `-` ボタンを押す
+
+### サンプル
+
+https://user-images.githubusercontent.com/1047810/107636801-849f2c00-6cb0-11eb-9923-7706647fd1b9.mp4
