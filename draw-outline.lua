@@ -37,7 +37,7 @@ struct VertDataOut {
     float2 uv  : TEXCOORD0;
 };
 
-VertDataOut VertexShader(VertDataIn v_in)
+VertDataOut VShader(VertDataIn v_in)
 {
     VertDataOut vert_out;
     vert_out.pos = mul(float4(v_in.pos.xyz, 1.0), ViewProj);
@@ -53,7 +53,7 @@ float diff(float2 uv, float2 diff)
     return col2.a - col1.a;
 }
 
-float4 PixelShader(VertDataOut v_in) : TARGET
+float4 PShader(VertDataOut v_in) : TARGET
 {
     float w = pixel_size.x * line_width / 2;
     float h = pixel_size.y * line_width / 2;
@@ -77,8 +77,8 @@ technique Draw
 {
     pass
     {
-        vertex_shader = VertexShader(v_in);
-        pixel_shader  = PixelShader(v_in);
+        vertex_shader = VShader(v_in);
+        pixel_shader  = PShader(v_in);
     }
 }
 ]]
@@ -180,7 +180,7 @@ source_def.video_render = function(filter, effect)
 end
 
 function script_description()
-  return "縁取りフィルタ。透明な箇所と不透明な箇所の境目に線を描く"
+  return '縁取りフィルタ。透明な箇所と不透明な箇所の境目に線を描く'
 end
 
 source_def.get_properties = function(settings)
