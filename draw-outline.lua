@@ -179,6 +179,10 @@ source_def.video_render = function(filter, effect)
     obs.obs_source_process_filter_end(filter.context, filter.effect, filter.width, filter.height)
 end
 
+function script_description()
+  return "縁取りフィルタ。透明な箇所と不透明な箇所の境目に線を描く"
+end
+
 source_def.get_properties = function(settings)
     props = obs.obs_properties_create()
 
