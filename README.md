@@ -16,6 +16,7 @@ Mac、Windows、Linuxの各環境で動作する、はず。
 2. OBSを起動後、`ツール` > `スクリプト` メニューを開く
 
 3. 左下の `+` ボタンを押し、ダウンロードした `draw-outline.lua` を選択する
+（後でファイルの位置を移動すると読み込めなくなるので、その場合は再度 `+`ボタンで追加し直してください）
 
 <img width="749" alt="screenshot-2" src="https://user-images.githubusercontent.com/1047810/107636330-d09da100-6caf-11eb-9f9c-bf44fd5c3bfb.png">
 
@@ -38,6 +39,8 @@ Mac、Windows、Linuxの各環境で動作する、はず。
 1. OBSを起動後、`ツール` > `スクリプト` メニューを開く
 
 2. `draw-outline.lua` を選択した状態で左下の `-` ボタンを押す
+
+3. `draw-outline.lua`ファイルはゴミ箱へ
 
 ### サンプル
 
