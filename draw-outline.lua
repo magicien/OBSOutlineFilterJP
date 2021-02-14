@@ -1,5 +1,5 @@
 obs = obslua
-bit = require("bit")
+bit = require('bit')
 
 SETTING_ALPHA_THRESHOLD = 'alpha_threshold'
 SETTING_LINE_COLOR = 'line_color'
@@ -18,7 +18,6 @@ uniform texture2d image;
 uniform float2 pixel_size;
 uniform float alpha_threshold;
 uniform float4 line_color;
-uniform float line_alpha;
 uniform float line_width;
 
 sampler_state textureSampler {
@@ -60,17 +59,17 @@ float4 PShader(VertDataOut v_in) : TARGET
 
     float d1 = diff(v_in.uv, float2(w, 0));
     float d2 = diff(v_in.uv, float2(0, h));
-    float d3 = diff(v_in.uv, float2(w, h));
-    float d4 = diff(v_in.uv, float2(w, -h));
+    float d3 = diff(v_in.uv, float2(w * 0.71, h * 0.71));
+    float d4 = diff(v_in.uv, float2(w * 0.71, -h * 0.71));
 
-    if (abs(d1) > alpha_threshold
+    float4 color = image.Sample(textureSampler, v_in.uv);
+
+    return (abs(d1) > alpha_threshold
       || abs(d2) > alpha_threshold
       || abs(d3) > alpha_threshold
-      || abs(d4) > alpha_threshold) {
-      return (image.Sample(textureSampler, v_in.uv) * (1 - line_alpha)) + line_color * line_alpha;
-    }
-
-    return image.Sample(textureSampler, v_in.uv);
+      || abs(d4) > alpha_threshold)
+      ? color + line_color * (1 - color.a)
+      : color;
 }
 
 technique Draw
@@ -109,7 +108,7 @@ function set_render_size(filter)
 end
 
 source_def.get_name = function()
-    return "縁取り"
+    return '縁取り'
 end
 
 source_def.create = function(settings, source)
@@ -159,9 +158,11 @@ end
 
 source_def.update = function(filter, settings)
     filter.alpha_threshold = obs.obs_data_get_double(settings, SETTING_ALPHA_THRESHOLD)
+
     line_color = obs.obs_data_get_int(settings, SETTING_LINE_COLOR)
-    obs.vec4_from_rgba(filter.line_color, line_color)
-    filter.line_alpha = obs.obs_data_get_double(settings, SETTING_LINE_ALPHA)
+    line_alpha = math.floor(obs.obs_data_get_double(settings, SETTING_LINE_ALPHA) * 255)
+    obs.vec4_from_rgba(filter.line_color, line_color + line_alpha * 0x1000000)
+
     filter.line_width = obs.obs_data_get_double(settings, SETTING_LINE_WIDTH)
 
     set_render_size(filter)
@@ -173,7 +174,6 @@ source_def.video_render = function(filter, effect)
     obs.gs_effect_set_vec2(filter.params.pixel_size, filter.pixel_size)
     obs.gs_effect_set_float(filter.params.alpha_threshold, filter.alpha_threshold)
     obs.gs_effect_set_vec4(filter.params.line_color, filter.line_color)
-    obs.gs_effect_set_float(filter.params.line_alpha, filter.line_alpha)
     obs.gs_effect_set_float(filter.params.line_width, filter.line_width)
 
     obs.obs_source_process_filter_end(filter.context, filter.effect, filter.width, filter.height)
@@ -186,19 +186,19 @@ end
 source_def.get_properties = function(settings)
     props = obs.obs_properties_create()
 
-    obs.obs_properties_add_float_slider(props, SETTING_ALPHA_THRESHOLD, TEXT_ALPHA_THRESHOLD, 0, 1, 0.01);
+    obs.obs_properties_add_float_slider(props, SETTING_ALPHA_THRESHOLD, TEXT_ALPHA_THRESHOLD, 0, 1, 0.01)
     obs.obs_properties_add_color(props, SETTING_LINE_COLOR, TEXT_LINE_COLOR)
-    obs.obs_properties_add_float_slider(props, SETTING_LINE_ALPHA, TEXT_LINE_ALPHA, 0, 1, 0.01);
-    obs.obs_properties_add_float_slider(props, SETTING_LINE_WIDTH, TEXT_LINE_WIDTH, 0, 100, 0.1);
+    obs.obs_properties_add_float_slider(props, SETTING_LINE_ALPHA, TEXT_LINE_ALPHA, 0, 1, 0.01)
+    obs.obs_properties_add_float_slider(props, SETTING_LINE_WIDTH, TEXT_LINE_WIDTH, 0, 100, 0.1)
 
     return props
 end
 
 source_def.get_defaults = function(settings)
-    obs.obs_data_set_default_double(settings, SETTING_ALPHA_THRESHOLD, 0.99);
+    obs.obs_data_set_default_double(settings, SETTING_ALPHA_THRESHOLD, 0.99)
     obs.obs_data_set_default_int(settings, SETTING_LINE_COLOR, 0x000000)
-    obs.obs_data_set_default_double(settings, SETTING_LINE_ALPHA, 1);
-    obs.obs_data_set_default_double(settings, SETTING_LINE_WIDTH, 1);
+    obs.obs_data_set_default_double(settings, SETTING_LINE_ALPHA, 1)
+    obs.obs_data_set_default_double(settings, SETTING_LINE_WIDTH, 1)
 end
 
 source_def.video_tick = function(filter, seconds)
