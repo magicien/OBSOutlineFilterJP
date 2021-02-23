@@ -52,6 +52,11 @@ float diff(float2 uv, float2 diff)
     return col2.a - col1.a;
 }
 
+float4 mixColor(float4 src, float4 dst)
+{
+    return dst * (1.0 - src.a) + float4(src.rgb * src.a, src.a);
+}
+
 float4 PShader(VertDataOut v_in) : TARGET
 {
     float w = pixel_size.x * line_width / 2;
@@ -68,7 +73,7 @@ float4 PShader(VertDataOut v_in) : TARGET
       || abs(d2) > alpha_threshold
       || abs(d3) > alpha_threshold
       || abs(d4) > alpha_threshold)
-      ? color + line_color * (1 - color.a)
+      ? mixColor(line_color, color)
       : color;
 }
 
