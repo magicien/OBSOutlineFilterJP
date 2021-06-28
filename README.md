@@ -53,3 +53,7 @@ https://user-images.githubusercontent.com/1047810/107636801-849f2c00-6cb0-11eb-9
 - 利用の際、クレジット表記は不要です
 - 複製、改変、再配布、商用利用はいずれも可です
 - 作者はこのソフトウェアの使用によって生じる損害について責任を負いません
+
+### 関連
+
+- [テイワットおでかけセット](https://github.com/magicien/OBSTeyvatPicnicKit)
